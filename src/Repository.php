@@ -268,4 +268,13 @@ final class Repository implements RepositoryInterface
             $current = &$current[$segment];
         }
     }
+
+    /**
+     * masked
+     */
+    public function masked(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
 }

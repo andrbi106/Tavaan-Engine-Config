@@ -127,4 +127,13 @@ final class EnvRepository
         }
         return $all;
     }
+
+    /**
+     * has
+     */
+    public function has(/* ... */): mixed
+    {
+        // TODO: Implement per docs.
+        return null;
+    }
 }
