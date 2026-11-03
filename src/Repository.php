@@ -272,7 +272,7 @@ final class Repository implements RepositoryInterface
     /**
      * masked
      */
-    public function masked(/* ... */): mixed
+    public function masked()
     {
         return null;
     }

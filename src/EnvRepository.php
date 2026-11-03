@@ -131,8 +131,8 @@ final class EnvRepository
     /**
      * has
      */
-    public function has(/* ... */): mixed
+    public function has(string $key): bool
     {
-        return $this;
+        return false;
     }
 }
