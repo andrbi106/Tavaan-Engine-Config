@@ -133,6 +133,6 @@ final class EnvRepository
      */
     public function has(/* ... */): mixed
     {
-        return \$this;
+        return $this;
     }
 }
