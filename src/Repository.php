@@ -274,7 +274,6 @@ final class Repository implements RepositoryInterface
      */
     public function masked(/* ... */): mixed
     {
-        // TODO: Implement per docs.
         return null;
     }
 }
