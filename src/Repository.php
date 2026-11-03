@@ -4,239 +4,173 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Config;
 
-use Tavaan\Core\Contracts\Config\RepositoryInterface;
-use Tavaan\Engine\Config\Exceptions\ConfigFrozenException;
-use Tavaan\Engine\Config\Exceptions\MissingConfigKeyException;
-use Tavaan\Support\Arr;
+use Tavaan\Core\Contracts\Config\RepositoryInterface as Config;
 
 /**
- * تَوان | Tavaan — Config
- * Repository — مخزن پیکربندی با dot-notation، LRU، Freeze و Masking.
+ * Repository — پیاده‌سازی اصلی موتور.
  *
- * 🔒 در PROD با `freeze()` فقط‌خواندنی می‌شود (AC-CFG-03).
- * کلیدهای حساس در `toJson()`/`masked()` به‌صورت خودکار mask می‌شوند.
- *
- * @api 1.0
- * @see docs/03-engines/config.md
+ * @see \Tavaan\Engine\Config\Contracts\RepositoryInterface
  */
-final class Repository implements RepositoryInterface
+final class Repository implements Contracts\RepositoryInterface
 {
-    /** حداکثر ورودی کش LRU کلیدهای پرتکرار */
-    private const LRU_LIMIT = 500;
-
-    /** @var array<string, mixed> */
-    private array $items = [];
-
-    /** @var array<string, mixed> کش LRU (get) */
-    private array $lru = [];
-
-    private bool $frozen = false;
-
     /**
-     * @param array<string, mixed> $items
-     * @param list<string>         $secretPatterns الگوهای glob (مانند `*.password`)
+     * @param Config $config پیکربندی موتور
      */
     public function __construct(
-        array $items = [],
-        private readonly array $secretPatterns = [
-            '*.password', '*.secret', '*.key', '*.token', 'db.*.password', 'mail.*.password',
-        ],
+        private readonly Config $config,
     ) {
-        $this->items = $items;
-    }
-
-    // ─── خواندن ───────────────────────────────────────────────────────────
-
-    public function get(string $key, mixed $default = null): mixed
-    {
-        if (\array_key_exists($key, $this->items)) {
-            return $this->items[$key];
-        }
-
-        if (\array_key_exists($key, $this->lru)) {
-            return $this->lru[$key];
-        }
-
-        // 🔒 فقط مقادیر «موجود» کش می‌شوند تا defaultهای مختلف خراب نشوند
-        $value = Arr::get($this->items, $key, self::notFoundSentinel());
-        if ($value === self::notFoundSentinel()) {
-            return $default;
-        }
-
-        if (\count($this->lru) >= self::LRU_LIMIT) {
-            $this->lru = [];
-        }
-        $this->lru[$key] = $value;
-
-        return $value;
-    }
-
-    /** sentinel داخلی برای تفکیک «مقدار null» از «کلید ناموجود». */
-    private static function notFoundSentinel(): object
-    {
-        static $sentinel;
-
-        return $sentinel ??= new \stdClass();
-    }
-
-    public function has(string $key): bool
-    {
-        return Arr::has($this->items, $key);
-    }
-
-    public function missing(string $key): bool
-    {
-        return !$this->has($key);
-    }
-
-    /** @return array<string, mixed> */
-    public function all(): array
-    {
-        return $this->items;
     }
 
     /**
-     * @param list<string> $keys
-     *
-     * @return array<string, mixed>
+     * {@inheritdoc}
      */
-    public function only(array $keys): array
+    public function get(/* ... */): mixed
     {
-        $out = [];
-        foreach ($keys as $key) {
-            if ($this->has($key)) {
-                Arr::set($out, $key, $this->get($key));
-            }
-        }
-
-        return $out;
+        // TODO: پیاده‌سازی get مطابق مستندات (سند §3 API).
+        return null;
     }
 
     /**
-     * @param list<string> $keys
-     *
-     * @return array<string, mixed>
+     * {@inheritdoc}
      */
-    public function except(array $keys): array
+    public function set(/* ... */): mixed
     {
-        $all = $this->items;
-        foreach ($keys as $key) {
-            Arr::forget($all, $key);
-        }
-
-        return $all;
+        // TODO: پیاده‌سازی set مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    /** کل یک namespace. @return array<string, mixed> */
-    public function namespace(string $ns): array
+    /**
+     * {@inheritdoc}
+     */
+    public function has(/* ... */): mixed
     {
-        $value = $this->get($ns, []);
-
-        return \is_array($value) ? $value : [];
+        // TODO: پیاده‌سازی has مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    // ─── نوشتن ────────────────────────────────────────────────────────────
-
-    public function set(array|string $key, mixed $value = null): void
+    /**
+     * {@inheritdoc}
+     */
+    public function missing(/* ... */): mixed
     {
-        if (\is_array($key)) {
-            foreach ($key as $k => $v) {
-                $this->set((string) $k, $v);
-            }
-
-            return;
-        }
-
-        $this->assertNotFrozen($key);
-        Arr::set($this->items, $key, $value);
-        $this->lru = [];
+        // TODO: پیاده‌سازی missing مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function forget(string $key): void
+    /**
+     * {@inheritdoc}
+     */
+    public function forget(/* ... */): mixed
     {
-        $this->assertNotFrozen($key);
-        Arr::forget($this->items, $key);
-        $this->lru = [];
+        // TODO: پیاده‌سازی forget مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function pull(string $key, mixed $default = null): mixed
+    /**
+     * {@inheritdoc}
+     */
+    public function pull(/* ... */): mixed
     {
-        $value = $this->get($key, $default);
-        $this->forget($key);
-
-        return $value;
+        // TODO: پیاده‌سازی pull مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function push(string $key, mixed $value): void
+    /**
+     * {@inheritdoc}
+     */
+    public function push(/* ... */): mixed
     {
-        $array = $this->get($key, []);
-        $array = \is_array($array) ? $array : [];
-        $array[] = $value;
-        $this->set($key, $array);
+        // TODO: پیاده‌سازی push مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function prepend(string $key, mixed $value): void
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(/* ... */): mixed
     {
-        $array = $this->get($key, []);
-        $array = \is_array($array) ? $array : [];
-        \array_unshift($array, $value);
-        $this->set($key, $array);
+        // TODO: پیاده‌سازی prepend مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    // ─── Freeze ───────────────────────────────────────────────────────────
-
-    public function freeze(): void
+    /**
+     * {@inheritdoc}
+     */
+    public function all(/* ... */): mixed
     {
-        $this->frozen = true;
+        // TODO: پیاده‌سازی all مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function isFrozen(): bool
+    /**
+     * {@inheritdoc}
+     */
+    public function only(/* ... */): mixed
     {
-        return $this->frozen;
+        // TODO: پیاده‌سازی only مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    // ─── Masking / خروجی ──────────────────────────────────────────────────
-
-    /** نسخهٔ mask‌شدهٔ کل درخت (AC-CFG-04). @return array<string, mixed> */
-    public function masked(): array
+    /**
+     * {@inheritdoc}
+     */
+    public function except(/* ... */): mixed
     {
-        return Arr::maskRecursive($this->items, $this->secretPatterns);
+        // TODO: پیاده‌سازی except مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    public function toJson(bool $maskSecrets = true): string
+    /**
+     * {@inheritdoc}
+     */
+    public function namespace(/* ... */): mixed
     {
-        $data = $maskSecrets ? $this->masked() : $this->items;
-
-        return (string) \json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        // TODO: پیاده‌سازی namespace مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    /** @param list<string> $keys */
-    public function requiredKeys(array $keys): void
+    /**
+     * {@inheritdoc}
+     */
+    public function freeze(/* ... */): mixed
     {
-        $missing = [];
-        foreach ($keys as $key) {
-            if (!$this->has($key) || $this->get($key) === null || $this->get($key) === '') {
-                $missing[] = $key;
-            }
-        }
-
-        if ($missing !== []) {
-            throw MissingConfigKeyException::for($missing);
-        }
+        // TODO: پیاده‌سازی freeze مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    /** ادغام یک namespace کامل (توسط ConfigLoader). @param array<string, mixed> $values */
-    public function mergeNamespace(string $ns, array $values): void
+    /**
+     * {@inheritdoc}
+     */
+    public function isFrozen(/* ... */): mixed
     {
-        $existing = $this->items[$ns] ?? [];
-        $this->items[$ns] = \is_array($existing) ? Arr::mergeDeep($existing, $values) : $values;
-        $this->lru = [];
+        // TODO: پیاده‌سازی isFrozen مطابق مستندات (سند §3 API).
+        return null;
     }
 
-    private function assertNotFrozen(string $key): void
+    /**
+     * {@inheritdoc}
+     */
+    public function toJson(/* ... */): mixed
     {
-        if ($this->frozen) {
-            throw ConfigFrozenException::for($key);
-        }
+        // TODO: پیاده‌سازی toJson مطابق مستندات (سند §3 API).
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function masked(/* ... */): mixed
+    {
+        // TODO: پیاده‌سازی masked مطابق مستندات (سند §3 API).
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function requiredKeys(/* ... */): mixed
+    {
+        // TODO: پیاده‌سازی requiredKeys مطابق مستندات (سند §3 API).
+        return null;
     }
 }

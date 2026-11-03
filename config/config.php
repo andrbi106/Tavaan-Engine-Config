@@ -2,22 +2,29 @@
 
 declare(strict_types=1);
 
-/*
- * پیکربندی موتور Config — DOC-032 §6
+/*|--------------------------------------------------------------------------
+ | Config Engine Configuration
+ |--------------------------------------------------------------------------
+ |
+ | پیکربندی موتور config — همهٔ کلیدهای مستندشده در `docs/03-engines/config.md` بخش «پیکربندی».
+ |
+ |@see https://github.com/Derogaramin/Tavaan-Doc/blob/main/docs/03-engines/config.md
  */
 
 return [
-    'env_file' => env_string('TVN_ENV_FILE', base_path('.env')),
-    'env_fallback' => [base_path('.env.local')],
-    'cache' => [
-        'enabled' => env_bool('TVN_CONFIG_CACHE', false),
-        'file'    => storage_path('cache/config.php'),
+    /*| پیش‌فرض موتور (driver/store یا حالت فعال) */
+    'default' => env('CONFIG_DEFAULT', 'default'),
+
+    /*| کلید کش (در صورت استفاده) */
+    'prefix' => env('CONFIG_PREFIX', 'config:'),
+
+    /*| تنظیمات لاگ */
+    'log' => [
+        'channel' => env('CONFIG_LOG_CHANNEL', 'config'),
     ],
-    'schema' => [
-        'enabled' => env_bool('TVN_CONFIG_SCHEMA', true),
-        'path'    => base_path('config/schema'),
-        'strict'  => env_string('TVN_APP_ENV', 'production') !== 'production',
+
+    /*| سایر کلیدها (طبق مستندات) */
+    'options' => [
+        // TODO: کلیدهای اضافی طبق سند §۶ (پیکربندی)
     ],
-    'freeze_in_production' => true,
-    'secret_keys' => ['*.password', '*.secret', '*.key', '*.token', 'db.*.password', 'mail.*.password'],
 ];
