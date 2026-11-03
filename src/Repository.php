@@ -272,8 +272,8 @@ final class Repository implements RepositoryInterface
     /**
      * masked
      */
-    public function masked()
+    public function masked(): array
     {
-        return null;
+        return $this->maskSecrets($this->all());
     }
 }
