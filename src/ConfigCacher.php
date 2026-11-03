@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Config;
 
-use Tavaan\Core\Contracts\Config\ConfigCacheInterface;
+use Tavaan\Engine\Config\Contracts\ConfigCacheInterface;
 use Tavaan\Engine\Config\Exceptions\ConfigNotCacheableException;
 
 /**
