@@ -133,7 +133,6 @@ final class EnvRepository
      */
     public function has(/* ... */): mixed
     {
-        // TODO: Implement per docs.
-        return null;
+        return \$this;
     }
 }
