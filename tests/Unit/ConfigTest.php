@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tavaan\Engine\Config\Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tavaan\Testing\TestCase;
 use Tavaan\Engine\Config\Repository;
 use Tavaan\Engine\Config\EnvLoader;
 use Tavaan\Engine\Config\EnvRepository;
