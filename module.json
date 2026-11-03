@@ -11,13 +11,11 @@
     }
   },
   "providers": [
-    "Tavaan\\Engine\\Config\\RepositoryServiceProvider"
+    "Tavaan\\Engine\\Config\\ConfigServiceProvider"
   ],
   "requires": {
     "php": ">=8.2",
-    "engines": [
-      "container"
-    ]
+    "engines": ["container"]
   },
   "config": {
     "file": "config/config.php",
@@ -25,19 +23,11 @@
   },
   "tables": [],
   "commands": [
-    "config:cache",
-    "config:clear",
-    "env:check"
+    "config:cache"
   ],
-  "facade": [
-    {
-      "name": "Config",
-      "accessor": "config"
-    },
-    {
-      "name": "Env",
-      "accessor": "env"
-    }
-  ],
+  "facade": {
+    "name": "Config",
+    "accessor": "config"
+  },
   "docs": "docs/03-engines/config.md"
 }

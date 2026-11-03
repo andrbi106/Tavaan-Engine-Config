@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-/*| پیام‌های fa برای موتور config */
-
 return [
-    'error_default' => 'خطای ناشناخته (config)',
-    'not_configured' => 'موتور پیکربندی نشده است (config)',
+    'error_frozen' => 'پیکربندی Frozen است و قابل تغییر نیست.',
+    'error_missing_key' => 'کلید اجباری «{0}» موجود نیست.',
+    'error_env_parse' => 'خطای parse فایل .env در خط {0}: {1}',
+    'error_required_env' => 'متغیر محیطی اجباری «{0}» موجود نیست.',
+    'command_cache' => 'کش پیکربندی',
 ];

@@ -5,129 +5,51 @@ declare(strict_types=1);
 namespace Tavaan\Engine\Config\Contracts;
 
 /**
- * قرارداد Repository.
+ * قرارداد Repository پیکربندی.
  *
  * @see \Tavaan\Engine\Config\Repository
  * @api 1.0
  */
 interface RepositoryInterface
 {
-    /**
-     * متد get.
-     *
-     * @return mixed
-     */
-    public function get(/* ... */): mixed;
+    public function get(string $key, mixed $default = null): mixed;
+
+    public function set(string|array $key, mixed $value = null): void;
+
+    public function has(string $key): bool;
+
+    public function missing(string $key): bool;
+
+    public function forget(string $key): void;
+
+    public function pull(string $key, mixed $default = null): mixed;
+
+    public function push(string $key, mixed $value): void;
+
+    public function prepend(string $key, mixed $value): void;
+
+    public function all(): array;
 
     /**
-     * متد set.
-     *
-     * @return mixed
+     * @param list<string> $keys
      */
-    public function set(/* ... */): mixed;
+    public function only(array $keys): array;
 
     /**
-     * متد has.
-     *
-     * @return mixed
+     * @param list<string> $keys
      */
-    public function has(/* ... */): mixed;
+    public function except(array $keys): array;
+
+    public function namespace(string $ns): array;
+
+    public function freeze(): void;
+
+    public function isFrozen(): bool;
+
+    public function toJson(bool $maskSecrets = true): string;
 
     /**
-     * متد missing.
-     *
-     * @return mixed
+     * @param list<string> $keys
      */
-    public function missing(/* ... */): mixed;
-
-    /**
-     * متد forget.
-     *
-     * @return mixed
-     */
-    public function forget(/* ... */): mixed;
-
-    /**
-     * متد pull.
-     *
-     * @return mixed
-     */
-    public function pull(/* ... */): mixed;
-
-    /**
-     * متد push.
-     *
-     * @return mixed
-     */
-    public function push(/* ... */): mixed;
-
-    /**
-     * متد prepend.
-     *
-     * @return mixed
-     */
-    public function prepend(/* ... */): mixed;
-
-    /**
-     * متد all.
-     *
-     * @return mixed
-     */
-    public function all(/* ... */): mixed;
-
-    /**
-     * متد only.
-     *
-     * @return mixed
-     */
-    public function only(/* ... */): mixed;
-
-    /**
-     * متد except.
-     *
-     * @return mixed
-     */
-    public function except(/* ... */): mixed;
-
-    /**
-     * متد namespace.
-     *
-     * @return mixed
-     */
-    public function namespace(/* ... */): mixed;
-
-    /**
-     * متد freeze.
-     *
-     * @return mixed
-     */
-    public function freeze(/* ... */): mixed;
-
-    /**
-     * متد isFrozen.
-     *
-     * @return mixed
-     */
-    public function isFrozen(/* ... */): mixed;
-
-    /**
-     * متد toJson.
-     *
-     * @return mixed
-     */
-    public function toJson(/* ... */): mixed;
-
-    /**
-     * متد masked.
-     *
-     * @return mixed
-     */
-    public function masked(/* ... */): mixed;
-
-    /**
-     * متد requiredKeys.
-     *
-     * @return mixed
-     */
-    public function requiredKeys(/* ... */): mixed;
+    public function requiredKeys(array $keys): void;
 }

@@ -2,29 +2,30 @@
 
 declare(strict_types=1);
 
-/*|--------------------------------------------------------------------------
- | Config Engine Configuration
- |--------------------------------------------------------------------------
- |
- | پیکربندی موتور config — همهٔ کلیدهای مستندشده در `docs/03-engines/config.md` بخش «پیکربندی».
- |
- |@see https://github.com/Derogaramin/Tavaan-Doc/blob/main/docs/03-engines/config.md
- */
-
 return [
-    /*| پیش‌فرض موتور (driver/store یا حالت فعال) */
-    'default' => env('CONFIG_DEFAULT', 'default'),
+    /*| env handling */
+    'env_file' => \getenv('TVN_ENV_FILE') !== false ? \getenv('TVN_ENV_FILE') : '.env',
+    'env_required' => \getenv('TVN_ENV_REQUIRED') !== false
+        ? \filter_var(\getenv('TVN_ENV_REQUIRED'), \FILTER_VALIDATE_BOOL)
+        : false,
 
-    /*| کلید کش (در صورت استفاده) */
-    'prefix' => env('CONFIG_PREFIX', 'config:'),
-
-    /*| تنظیمات لاگ */
-    'log' => [
-        'channel' => env('CONFIG_LOG_CHANNEL', 'config'),
+    /*| config caching */
+    'cache' => [
+        'enabled' => \getenv('TVN_CONFIG_CACHE') !== false
+            ? \filter_var(\getenv('TVN_CONFIG_CACHE'), \FILTER_VALIDATE_BOOL)
+            : false,
+        'path' => 'storage/framework/config.php',
     ],
 
-    /*| سایر کلیدها (طبق مستندات) */
-    'options' => [
-        // TODO: کلیدهای اضافی طبق سند §۶ (پیکربندی)
+    /*| schema validation in DEV */
+    'schema' => [
+        'enabled' => \getenv('TVN_CONFIG_SCHEMA') !== false
+            ? \filter_var(\getenv('TVN_CONFIG_SCHEMA'), \FILTER_VALIDATE_BOOL)
+            : false,
     ],
+
+    /*| Frozen در production */
+    'frozen' => \getenv('TVN_CONFIG_FROZEN') !== false
+        ? \filter_var(\getenv('TVN_CONFIG_FROZEN'), \FILTER_VALIDATE_BOOL)
+        : false,
 ];

@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-/*| پیام‌های en برای موتور config */
-
 return [
-    'error_default' => 'Unknown error (config)',
-    'not_configured' => 'Engine not configured (config)',
+    'error_frozen' => 'Configuration is frozen and cannot be modified.',
+    'error_missing_key' => 'Required config key "{0}" is missing.',
+    'error_env_parse' => 'Failed to parse .env on line {0}: {1}',
+    'error_required_env' => 'Required environment variable "{0}" is missing.',
+    'command_cache' => 'Cache configuration',
 ];
