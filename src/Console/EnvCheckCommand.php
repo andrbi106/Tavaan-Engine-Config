@@ -9,7 +9,7 @@ use Tavaan\Core\Contracts\Console\CommandInterface;
 /**
  * env:check command.
  */
-final class Env_checkCommand implements CommandInterface
+final class EnvCheckCommand implements CommandInterface
 {
     public function name(): string
     {

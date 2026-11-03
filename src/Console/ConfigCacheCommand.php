@@ -7,18 +7,18 @@ namespace Tavaan\Engine\Config\Console;
 use Tavaan\Core\Contracts\Console\CommandInterface;
 
 /**
- * config:clear command.
+ * config:cache command.
  */
-final class Config_clearCommand implements CommandInterface
+final class ConfigCacheCommand implements CommandInterface
 {
     public function name(): string
     {
-        return 'config:clear';
+        return 'config:cache';
     }
 
     public function description(): string
     {
-        return 'Run config:clear (TODO: fill description).';
+        return 'Run config:cache (TODO: fill description).';
     }
 
     public function handle(array $args = []): int
