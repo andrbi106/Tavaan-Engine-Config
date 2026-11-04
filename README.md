@@ -2,6 +2,8 @@
 
 > **پیکربندی و محیط** — موتور Config در فریمورک تَوان
 
+این موتور از کلاس پایهٔ `Engine` (در [Tavaan-Engine-Core](https://github.com/andrbi106/Tavaan-Engine-Core)) ارث می‌برد.
+
 ## مشخصات
 
 | فیلد | مقدار |
@@ -11,78 +13,64 @@
 | عنوان فارسی | پیکربندی و محیط |
 | نسخه | `0.1.0` |
 | namespace | `Tavaan\Engine\Config` |
-| نوع | `engine` |
-| Facade | `Config` (accessor: `config`) |
+| کلاس موتور | `Tavaan\Engine\Config\ConfigEngine` |
+| Facade | Config (`config`) |
 
-## قراردادها (Contracts)
+## کلاس موتور
 
-این موتور قراردادهای زیر را ارائه می‌دهد:
+```php
+namespace Tavaan\Engine\Config;
 
-- `Tavaan\Engine\Config\Contracts\ConfigCacheInterface`
-- `Tavaan\Engine\Config\Contracts\EnvRepositoryInterface`
-- `Tavaan\Engine\Config\Contracts\RepositoryInterface`
+use Tavaan\EngineCore\Engine as BaseEngine;
+use Tavaan\EngineCore\Contracts\EngineManifestInterface;
 
-## خطاها (Exceptions)
+final class ConfigEngine extends BaseEngine
+{
+    public function __construct(EngineManifestInterface $manifest)
+    {
+        parent::__construct($manifest);
+    }
 
-- `Tavaan\Engine\Config\Exceptions\ConfigException`
-- `Tavaan\Engine\Config\Exceptions\ConfigFrozenException`
-- `Tavaan\Engine\Config\Exceptions\ConfigNotCacheableException`
-- `Tavaan\Engine\Config\Exceptions\EnvParseException`
-- `Tavaan\Engine\Config\Exceptions\MissingConfigKeyException`
-- `Tavaan\Engine\Config\Exceptions\SchemaValidationException`
+    public function register(ContainerInterface $container): void
+    {
+        parent::register($container);
+        // bindingهای اختصاصی موتور
+    }
 
-## Facadeها
+    public function boot(): void
+    {
+        parent::boot();
+    }
+}
+```
 
-- `Tavaan\Engine\Config\Facades\Config`
+**فایل:** `src/ConfigEngine.php`
 
-## کلاس‌های اصلی
+## وابستگی‌ها
 
-- `src/ConfigCacher.php`
-- `src/ConfigLoader.php`
-- `src/ConfigServiceProvider.php`
-- `src/Console/ConfigCacheCommand.php`
-- `src/EnvLoader.php`
-- `src/EnvRepository.php`
-- `src/Repository.php`
-- `src/SchemaValidator.php`
-- `src/helpers.php`
+**موتورهای مورد‌نیاز:** `container`
 
 ## Service Providerها
 
 - `Tavaan\Engine\Config\ConfigServiceProvider`
 
-## وابستگی‌ها
-
-**موتورهای مورد‌نیاز:**
-
-- `container`
-
 ## دستورات CLI
 
 - `config:cache`
 
-## پیکربندی
+## سه درگاه ارتباط با سایر موتورها
 
-- فایل پیکربندی: `config/config.php`
-- کلید: `config`
+| درگاه | الگو | متدهای convenience |
+|---|---|---|
+| Container | pull-based DI | `make()`, `bound()` |
+| Events | pub/sub | `dispatch()`, `listen()` |
+| EngineBus | point-to-point RPC | `call()`, `offer()` |
 
 ## نصب
 
 ```bash
 git clone https://github.com/andrbi106/Tavaan-Engine-Config.git
 ```
-
-این موتور بخشی از فریمورک تَوان است و معمولاً به‌صورت مستقیم نصب نمی‌شود،
-بلکه توسط [Tavaan-Core](https://github.com/andrbi106/Tavaan-Core) مدیریت می‌شود.
-
-## روابط با سایر مخازن
-
-| مخزن | نقش |
-|---|---|
-| **`andrbi106/Tavaan-Engine-Config`** (این مخزن) | موتور Config |
-| `andrbi106/Tavaan-Engine-Core` | ساختار پایه + درگاه ارتباط موتورها |
-| `andrbi106/Tavaan-Core` | اسکلت اپلیکیشن + همهٔ موتورها |
-| `Derogaramin/Tavaan-Framework` | فریمورک مادر (monorepo) |
 
 ## مجوز
 

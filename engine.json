@@ -15,7 +15,9 @@
   ],
   "requires": {
     "php": ">=8.2",
-    "engines": ["container"]
+    "engines": [
+      "container"
+    ]
   },
   "config": {
     "file": "config/config.php",
@@ -29,5 +31,6 @@
     "name": "Config",
     "accessor": "config"
   },
-  "docs": "docs/03-engines/config.md"
+  "docs": "docs/03-engines/config.md",
+  "class": "Tavaan\\Engine\\Config\\ConfigEngine"
 }
